@@ -7,7 +7,7 @@ const config = {
   session:{
     secrets: '0a6b944d-d2fb-46fc-a85e-0295c986cd9f',
   },
-  db: 'mongodb://root:Apoob21106@dds-2zedcc03374ee6c42.mongodb.rds.aliyuncs.com:3717/admin?replicaSet=mgset-2002845'
+  db: 'mongodb://root:Apoob21101@dds-2zedcc03374ee6c42.mongodb.rds.aliyuncs.com:3717/admin?replicaSet=mgset-2002845'
 };
 
 module.exports = config;
