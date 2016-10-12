@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <% include ../include/head.html %>
+</head>
+<body>
+<% include ../include/navbar.html %>
+<div id="main">
+    <% include ../include/sidebar.html %>
+    <div id="content">
+        <div class="panel">
+            <div class="header">
+                <ul class="breadcrumb">
+                    <li><a href="/console">主页</a><span class="divider">/</span></li>
+                    <li class="active">兑换列表</li>
+                </ul>
+            </div>
+            <div class="inner">
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="60">用户id</th>
+                        <th width="40">积分</th>
+                        <th width="40">兑换</th>
+                        <th width="50">类型</th>
+                        <th>账户</th>
+                        <th>标题</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    <% for(var i = 0; i < page.rows.length; i++){ %>
+                    <tr>
+                        <td><span><%= page.rows[i].user_id %></span></td>
+                        <td><span><%= page.rows[i].points %></span></td>
+                        <td><span><%= page.rows[i].money %></span></td>
+                        <td><span><%= page.rows[i].type %></span></td>
+                        <td><span><%= page.rows[i].account %></span></td>
+                        <td><span><%= page.rows[i].title %></span></td>
+
+                        <% if(page.rows[i].type === 'refund'){ %>
+                        <td><span>失败退款</span></td>
+                        <td><span>-&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;-</span></td>
+                        <% }else{ %>
+                        <td><span><%= exchangeState[page.rows[i].state] %></span></td>
+                        <td>
+                            <% if(page.rows[i].state == 0){ %>
+                            <a class="btn-link" href="/console/exchange/change/<%= page.rows[i]._id %>/state/1">通过</a>
+                            &nbsp;&nbsp;&nbsp;
+                            <a class="btn-link" href="/console/exchange/change/<%= page.rows[i]._id %>/state/2">无效</a>
+                            &nbsp;&nbsp;&nbsp;
+                            <a class="btn-link" href="/console/exchange/change/<%= page.rows[i]._id %>/state/3">退回</a>
+                            <% } else {%>
+                            -
+                            &nbsp;&nbsp;&nbsp;
+                            -
+                            &nbsp;&nbsp;&nbsp;
+                            -
+                            <% }%>
+                        </td>
+                        <% } %>
+                    </tr>
+                    <% } %>
+                </table>
+
+                <div class='pagination' currentPage='<%= currentPage %>'>
+                    <ul>
+                        <% var base_url = base + (base.indexOf('?') < 0 ? '?' : '&') + 'page='; %>
+                        <% if (currentPage == 1) { %>
+                        <li class='disabled'><a>«</a></li>
+                        <% } else { %>
+                        <li><a href="<%= base_url %>1">«</a></li>
+                        <% } %>
+
+                        <%
+                        var pageStart = currentPage - 2 > 0 ? currentPage - 2 : 1;
+                        var pageEnd = pageStart + 4 >= page.total ? page.total : pageStart + 4;
+                        %>
+
+                        <% if (pageStart > 1) { %>
+                        <li><a>...</a></li>
+                        <% } %>
+
+                        <% for(var i = pageStart; i <= pageEnd; i++) { %>
+                        <% if (i == currentPage) { %>
+                        <li class='disabled'><a><%= i %></a></li>
+                        <% } else { %>
+                        <li><a href='<%= base_url + i %>'><%= i %></a></li>
+                        <% } %>
+                        <% } %>
+
+                        <% if (pageEnd < page.total ) { %>
+                        <li><a>...</a></li>
+                        <% } %>
+
+                        <% if (currentPage == page.total) { %>
+                        <li class='disabled'><a>»</a></li>
+                        <% } else { %>
+                        <li><a href='<%= base_url + page.total %>'>»</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../include/footer.html %>
+</body>
+</html>
