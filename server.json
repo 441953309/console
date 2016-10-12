@@ -1,39 +1,14 @@
 [
   {
-    "name": "mobaders-console",
-    "script": "bin/run_console",
-    "error_file": "log/server-err.log",
-    "out_file": "log/server-out.log",
-    "pid_file": "log/server.pid",
+    "name": "console",
+    "script": "bin/run",
+    "error_file": "log/console-err.log",
+    "out_file": "log/console-out.log",
+    "pid_file": "log/console.pid",
     "one_launch_only": "true",
     "env": {
       "NODE_ENV": "production",
       "PORT": "7001"
-    }
-  },
-  {
-    "name": "mobaders-api",
-    "script": "bin/run_api",
-    "error_file": "log/api-err.log",
-    "out_file": "log/api-out.log",
-    "pid_file": "log/api.pid",
-    "one_launch_only": "true",
-    "instances": 14,
-    "env": {
-      "NODE_ENV": "production",
-      "PORT": "7002"
-    }
-  },
-  {
-    "name": "mobaders-schedule",
-    "script": "src/server_schedule.js",
-    "error_file": "log/schedule-err.log",
-    "out_file": "log/schedule-out.log",
-    "pid_file": "log/schedule.pid",
-    "one_launch_only": "true",
-    "exec_interpreter": "babel-node",
-    "env": {
-      "NODE_ENV": "production"
     }
   }
 ]
