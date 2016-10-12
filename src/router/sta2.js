@@ -6,7 +6,6 @@ const AdGroup = mongoose.model('AdGroup');
 const ShowRecord = mongoose.model('ShowRecord');
 const ClickRecord = mongoose.model('ClickRecord');
 
-const HourSta = mongoose.model('HourSta');
 const ShowHourSta = mongoose.model('ShowHourSta');
 const ClickHourSta = mongoose.model('ClickHourSta');
 
