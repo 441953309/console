@@ -1,12 +1,13 @@
 const path = require('path');
 const convert = require('koa-convert');
+var bodyParser = require('koa-bodyparser');
 const views = require('koa-views');
 const config = require('./index');
 
 export default function configKoa(app) {
   app.keys = [config.session.secrets];
   app.use(convert(require('koa-session')(app)));
-
+  app.use(bodyParser());
   app.use(views(path.join(__dirname, '../views'), {
     extension: 'html',
     map: {html: 'ejs'}
