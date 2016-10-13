@@ -5,7 +5,6 @@ const timestamps = require('mongoose-timestamp');
 let AdGroupSchema = new Schema({
   name: String,
   des: String,
-  type: {type: Number, default: 1},
   isS: {type: Boolean, default: true},    //是否展示
   isA: {type: Boolean, default: true},    //是否自动点击
   isWX: {type: Boolean, default: false},  //是否微信渠道

@@ -3,69 +3,12 @@ const mongoose = require('mongoose');
 
 const Ad = mongoose.model('Ad');
 const AdGroup = mongoose.model('AdGroup');
+
 const ShowRecord = mongoose.model('ShowRecord');
 const ClickRecord = mongoose.model('ClickRecord');
 
 const ShowHourSta = mongoose.model('ShowHourSta');
 const ClickHourSta = mongoose.model('ClickHourSta');
-
-export async function dayList(ctx) {
-  let date = moment();//默认今天
-  if (ctx.query.date) {
-    if (moment(ctx.query.date).isValid()) date = moment(ctx.query.date);
-  }
-
-  const jsDate = date.toDate();
-  const startTime = new Date(jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate());
-  const endTime = new Date(jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate() + 1);
-
-  let staList = await HourSta.aggregate()
-    .match({time: {'$gte': startTime, '$lt': endTime}})
-    .project({
-      year: {$year: '$time'},
-      month: {$month: '$time'},
-      date: {$dayOfMonth: '$time'},
-      group_id: '$group_id',
-      ad_id: '$ad_id',
-      show_count: '$show_count',
-      show_ip_count: '$show_ip_count',
-      auto_click_count: '$auto_click_count',
-      auto_click_ip_count: '$auto_click_ip_count',
-      user_click_count: '$user_click_count',
-      user_click_ip_count: '$user_click_ip_count',
-    })
-    .group({
-      _id: {group_id: '$group_id', ad_id: '$ad_id', year: '$year', month: '$month', date: '$date'},
-      show_count: {$sum: '$show_count'},
-      show_ip_count: {$sum: '$show_ip_count'},
-      auto_click_count: {$sum: '$auto_click_count'},
-      auto_click_ip_count: {$sum: '$auto_click_ip_count'},
-      user_click_count: {$sum: '$user_click_count'},
-      user_click_ip_count: {$sum: '$user_click_ip_count'},
-    });
-
-  staList = await HourSta.populate(staList,
-    [
-      {path: '_id.group_id', select: 'name', model: 'AdGroup'},
-      {path: '_id.ad_id', select: 'name', model: 'Ad'}
-    ]
-  );
-
-  return ctx.render('console/sta_day/list', {items: staList, date: date.format('YYYY-MM-DD'), page: {base: '/console/sta_day'}});
-}
-
-export async function hourList(ctx) {
-  let date = moment().subtract(1, 'h');//默认上一个小时
-  if (ctx.query.date) {
-    if (moment(ctx.query.date).isValid()) date = moment(ctx.query.date);
-  }
-
-  const jsDate = date.toDate();
-  const time = new Date(jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate(), jsDate.getHours());
-  const staList = await HourSta.find({time: time}).populate(['group_id', 'ad_id']);
-
-  return ctx.render('console/sta_hour/list', {items: staList, date: date.format('YYYY-MM-DD'), time: date.format('HH:00'), page: {base: '/console/sta_hour'}});
-}
 
 export async function showDayList(ctx) {
   let date = moment();//默认今天

@@ -1,6 +1,6 @@
 const path = require('path');
 const convert = require('koa-convert');
-const bodyParser = require('koa-bodyparser');
+const body = require('koa-better-body');
 const compress = require('koa-compress');
 const views = require('koa-views');
 const config = require('./index');
@@ -8,7 +8,7 @@ const config = require('./index');
 export default function configKoa(app) {
   app.keys = [config.session.secrets];
   app.use(convert(require('koa-session')(app)));
-  app.use(bodyParser());
+  app.use(convert(body()));
   app.use(compress());
   app.use(views(path.join(__dirname, '../views'), {
     extension: 'html',

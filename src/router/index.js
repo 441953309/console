@@ -32,13 +32,6 @@ router.get('/sta/hour/click', sta2.clickHourList);
 router.get('/sta/realtime/show', sta2.realtime_show);
 router.get('/sta/realtime/click', sta2.realtime_click);
 
-
-router.get('/sta_day', sta2.dayList);
-router.get('/sta_hour', sta2.hourList);
-
 export default function configRoutes(app) {
   app.use(mount('/console', router.routes()));
 }
-
-
-

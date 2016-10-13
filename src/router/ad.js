@@ -43,6 +43,7 @@ export async function createAd(ctx) {
   if (ctx.body.weight)body.weight = ctx.body.weight;
   body.isS = !!ctx.body.isS;
   body.isA = !!ctx.body.isA;
+  body.isWX = !!ctx.body.isWX;
   body.disable = !!ctx.body.disable;
 
   await Ad.create(body);
@@ -73,6 +74,7 @@ export async function editAd(ctx) {
   if (ctx.body.weight)ad.weight = ctx.body.weight;
   ad.isS = !!ctx.body.isS;
   ad.isA = !!ctx.body.isA;
+  ad.isWX = !!ctx.body.isWX;
   ad.disable = !!ctx.body.disable;
   await ad.save();
 
@@ -85,7 +87,7 @@ export async function groupList(ctx) {
   const startRow = (page - 1) * perPage;
 
   const count = await AdGroup.count();
-  const groups = await AdGroup.find({}).populate('ads').skip(startRow).limit(perPage).sort('-createAt');
+  const groups = await AdGroup.find({}).populate('ads').skip(startRow).limit(perPage).sort('-weight');
 
   return ctx.render('console/ad_group/list', {items: groups, page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/group'}});
 }
@@ -104,8 +106,10 @@ export async function createGroup(ctx) {
 
   var des = validator.trim(ctx.body.des);
   var cnzz_id = validator.trim(ctx.body.cnzz_id);
+  var weight = validator.trim(ctx.body.weight);
   var isS = !!ctx.body.isS;
   var isA = !!ctx.body.isA;
+  var isWX = !!ctx.body.isWX;
   var canClose = !!ctx.body.canClose;
   var disable = !!ctx.body.disable;
 
@@ -120,7 +124,7 @@ export async function createGroup(ctx) {
     }
   }
 
-  await AdGroup.create({name, des, cnzz_id, disable, ads, isS, isA, canClose});
+  await AdGroup.create({name, des, cnzz_id, weight, disable, ads, isS, isA, isWX, canClose});
   return ctx.redirect('/console/group');
 }
 
@@ -147,8 +151,10 @@ export async function editGroup(ctx) {
 
   var des = validator.trim(ctx.body.des);
   var cnzz_id = validator.trim(ctx.body.cnzz_id);
+  var weight = validator.trim(ctx.body.weight);
   var isS = !!ctx.body.isS;
   var isA = !!ctx.body.isA;
+  var isWX = !!ctx.body.isWX;
   var canClose = !!ctx.body.canClose;
   var disable = !!ctx.body.disable;
   var ads = [];
@@ -164,8 +170,10 @@ export async function editGroup(ctx) {
 
   group.des = des;
   group.cnzz_id = cnzz_id;
+  group.weight = weight;
   group.isS = isS;
   group.isA = isA;
+  group.isWX = isWX;
   group.canClose = canClose;
   group.disable = disable;
   group.ads = ads;

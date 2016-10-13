@@ -51,6 +51,13 @@
                      value="<%= typeof(group) !== 'undefined' && group.cnzz_id || '' %>"/>
             </div>
           </div>
+          <div class="control-group">
+            <label class="control-label" for="weight">weight</label>
+            <div class="controls">
+              <input class="input-xlarge" id="weight" name="weight" size="30" type="number"
+                     value="<%= typeof(group) !== 'undefined' && group.weight || '' %>"/>
+            </div>
+          </div>
 
           <div class="control-group">
             <label class="control-label" for="isS">isShow</label>
@@ -73,6 +80,20 @@
                 <input id="isA" name="isA" type="checkbox"> 自动
                 <% } else {%>
                 <input id="isA" name="isA" type="checkbox" checked> 自动
+                <% } %>
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="isWX">isWX</label>
+
+            <div class="controls">
+              <label class="checkbox">
+                <% if(typeof(group) !== 'undefined' && group.isWX) { %>
+                <input id="isWX" name="isWX" type="checkbox" checked> 微信渠道
+                <% } else {%>
+                <input id="isWX" name="isWX" type="checkbox"> 微信渠道
                 <% } %>
               </label>
             </div>
