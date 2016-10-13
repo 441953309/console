@@ -19,9 +19,9 @@
       <div class="inner">
         <table class="table table-bordered">
           <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>des</th>
+            <th width="15">id</th>
+            <th width="50">name</th>
+            <th width="60">des</th>
             <th width="180">img</th>
             <th>groups</th>
             <th width="45">weight</th>
@@ -34,7 +34,7 @@
           </tr>
           <% for(var i = 0; i < items.length; i++){ %>
           <tr>
-            <td><span><%= i %></span></td>
+            <td><span><%= i+1 %></span></td>
             <td><span><%= items[i].name %></span></td>
             <td><span><%= items[i].des %></span></td>
             <td><span><img src="<%= `http://res.mobaders.com/uploads/${items[i].imgName}.jpg` %>"/></span></td>
