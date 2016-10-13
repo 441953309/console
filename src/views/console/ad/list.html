@@ -19,6 +19,7 @@
       <div class="inner">
         <table class="table table-bordered">
           <tr>
+            <th>id</th>
             <th>name</th>
             <th>des</th>
             <th width="180">img</th>
@@ -33,6 +34,7 @@
           </tr>
           <% for(var i = 0; i < items.length; i++){ %>
           <tr>
+            <td><span><%= i %></span></td>
             <td><span><%= items[i].name %></span></td>
             <td><span><%= items[i].des %></span></td>
             <td><span><img src="<%= `http://res.mobaders.com/uploads/${items[i].imgName}.jpg` %>"/></span></td>
