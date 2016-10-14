@@ -15,9 +15,9 @@ export async function showRegister(ctx) {
 }
 
 export async function register(ctx) {
-  var name = validator.trim(ctx.request.body.name);
-  var pass = validator.trim(ctx.request.body.pass);
-  var re_pass = validator.trim(ctx.request.body.re_pass);
+  var name = validator.trim(ctx.body.name);
+  var pass = validator.trim(ctx.body.pass);
+  var re_pass = validator.trim(ctx.body.re_pass);
 
   if (!name || !pass || !re_pass) return ctx.render('console/admin/register', {error: '信息不完整。', name: name});
   if (name.length < 6) return ctx.render('console/admin/register', {error: '用户名至少需要5个字符。', name: name});
@@ -40,8 +40,8 @@ export async function showLogin(ctx) {
 }
 
 export async function login(ctx) {
-  var name = validator.trim(ctx.request.body.name);
-  var pass = validator.trim(ctx.request.body.pass);
+  var name = validator.trim(ctx.body.name);
+  var pass = validator.trim(ctx.body.pass);
 
   if (!name || !pass) return ctx.render('console/admin/login', {error: '信息不完整。', name: name});
 
