@@ -6,9 +6,9 @@ const views = require('koa-views');
 const config = require('./index');
 
 export default function configKoa(app) {
+  app.use(convert(body()));
   app.keys = [config.session.secrets];
   app.use(convert(require('koa-session')(app)));
-  app.use(convert(body()));
   app.use(compress());
   app.use(views(path.join(__dirname, '../views'), {
     extension: 'html',
