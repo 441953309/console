@@ -1,11 +1,7 @@
 {
-  "name": "mobaders",
-  "description": "REST microservice for koa2-app-service",
-  "license": "MIT",
-  "version": "0.0.1",
+  "name": "console",
+  "version": "1.0.0",
   "scripts": {
-    "start_console": "nodemon bin/run_console",
-    "start_api": "nodemon bin/run_api",
     "pm2": "pm2 start server.json"
   },
   "dependencies": {
