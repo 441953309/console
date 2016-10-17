@@ -14,11 +14,11 @@ export async function adList(ctx) {
   const ads = await Ad.find({}).skip(startRow).limit(perPage).sort('disable -weight').populate('groups', 'name');
 
   const items = [];
-  for(let ad of ads){
+  for (let ad of ads) {
     let item = ad.toObject();
-    const groups = await AdGroup.find({ads:item._id}, 'name');
+    const groups = await AdGroup.find({ads: item._id}, 'name');
     item.groups1 = [];
-    for(let group of groups){
+    for (let group of groups) {
       item.groups1.push(group.name);
     }
     items.push(item);
@@ -119,11 +119,11 @@ export async function groupList(ctx) {
   const groups = await AdGroup.find({}).populate('ads').skip(startRow).limit(perPage).sort('disable -weight');
 
   const items = [];
-  for(let group of groups){
+  for (let group of groups) {
     let item = group.toObject();
-    const ads = await Ad.find({groups:item._id}, 'name');
+    const ads = await Ad.find({disable: false, $or: [{isAll: true}, {groups: item._id}]}, 'name');
     item.ads1 = [];
-    for(let ad of ads){
+    for (let ad of ads) {
       item.ads1.push(ad.name);
     }
     items.push(item);
