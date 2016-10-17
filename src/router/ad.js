@@ -11,15 +11,15 @@ export async function adList(ctx) {
   const startRow = (page - 1) * perPage;
 
   const count = await Ad.count();
-  const ads = await Ad.find({}).skip(startRow).limit(perPage).sort('-weight');
+  const ads = await Ad.find({}).skip(startRow).limit(perPage).sort('-weight').populate('groups', 'name');
 
   const items = [];
   for(let ad of ads){
     let item = ad.toObject();
     const groups = await AdGroup.find({ads:item._id}, 'name');
-    item.groups = [];
+    item.groups1 = [];
     for(let group of groups){
-      item.groups.push(group.name);
+      item.groups1.push(group.name);
     }
     items.push(item);
   }
@@ -28,12 +28,14 @@ export async function adList(ctx) {
 }
 
 export async function showCreateAd(ctx) {
-  return ctx.render('console/ad/edit');
+  const groups = await AdGroup.find({disable: false}).sort('-weight');
+  return ctx.render('console/ad/edit', {groupList: groups});
 }
 
 export async function createAd(ctx) {
-  if (!ctx.body.imgName) return ctx.render('console/ad/edit', {error: '请输入图片名称'});
-  if (!ctx.body.url) return ctx.render('console/ad/edit', {error: '请输入链接'});
+  const groups = await AdGroup.find({disable: false}).sort('-weight');
+  if (!ctx.body.imgName) return ctx.render('console/ad/edit', {error: '请输入图片名称', groupList: groups});
+  if (!ctx.body.url) return ctx.render('console/ad/edit', {error: '请输入链接', groupList: groups});
 
   const body = {};
   body.imgName = ctx.body.imgName;
@@ -45,6 +47,18 @@ export async function createAd(ctx) {
   body.isA = !!ctx.body.isA;
   body.isWX = !!ctx.body.isWX;
   body.disable = !!ctx.body.disable;
+  body.isAll = !!ctx.body.isAll;
+
+  body.groups = [];
+  if (!body.isAll && ctx.body.groups) {
+    if (ctx.body.groups instanceof Array) {
+      for (let groupId of ctx.body.groups) {
+        if (mongoose.Types.ObjectId.isValid(groupId))body.groups.push(groupId)
+      }
+    } else if (mongoose.Types.ObjectId.isValid(ctx.body.groups)) {//只选择一个的时候
+      body.groups.push(ctx.body.groups)
+    }
+  }
 
   await Ad.create(body);
   return ctx.redirect('/console/ad');
@@ -57,7 +71,8 @@ export async function showEditAd(ctx) {
   const ad = await Ad.findById(id)
   if (!ad)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
-  return ctx.render('console/ad/edit', {action: 'edit', ad})
+  const groups = await AdGroup.find({disable: false}).sort('-weight');
+  return ctx.render('console/ad/edit', {action: 'edit', ad, groupList: groups})
 }
 
 export async function editAd(ctx) {
@@ -76,6 +91,20 @@ export async function editAd(ctx) {
   ad.isA = !!ctx.body.isA;
   ad.isWX = !!ctx.body.isWX;
   ad.disable = !!ctx.body.disable;
+  ad.isAll = !!ctx.body.isAll;
+
+  const groups = [];
+  if (!ad.isAll && ctx.body.groups) {
+    if (ctx.body.groups instanceof Array) {
+      for (let groupId of ctx.body.groups) {
+        if (mongoose.Types.ObjectId.isValid(groupId))groups.push(groupId)
+      }
+    } else if (mongoose.Types.ObjectId.isValid(ctx.body.groups)) {//只选择一个的时候
+      groups.push(ctx.body.groups)
+    }
+  }
+  ad.groups = groups;
+
   await ad.save();
 
   return ctx.redirect('/console/ad');

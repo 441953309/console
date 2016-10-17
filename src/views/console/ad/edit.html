@@ -24,9 +24,9 @@
         <% } %>
 
         <% if(typeof(action) !== 'undefined' && action === 'edit') { %>
-        <form class="form-horizontal" action="/console/ad/edit/<%= ad._id %>" method="post" enctype="multipart/form-data">
+        <form class="form-horizontal" action="/console/ad/edit/<%= ad._id %>" method="post">
         <% } else {%>
-        <form class="form-horizontal" action="/console/ad/create" method="post" enctype="multipart/form-data">
+        <form class="form-horizontal" action="/console/ad/create" method="post">
         <% } %>
           <div class="control-group">
             <label class="control-label" for="name">name</label>
@@ -117,6 +117,36 @@
                 <input id="disable" name="disable" type="checkbox"> 禁用
                 <% } %>
               </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="isAll">isAll</label>
+            <div class="controls">
+              <label class="checkbox">
+                <% if(typeof(ad) !== 'undefined' && ad.isAll) { %>
+                <input id="isAll" name="isAll" type="checkbox" checked> 全部渠道
+                <% } else {%>
+                <input id="isAll" name="isAll" type="checkbox"> 全部渠道
+                <% } %>
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="groups" >groups</label>
+
+            <div class="controls">
+              <% for(var i = 0; i < groupList.length; i++) { %>
+              <label class="checkbox">
+                <% if(typeof(ad) !== 'undefined' && ad.groups.indexOf(groupList[i].id) > -1) { %>
+                <input type="checkbox" id="groups" name="groups" value="<%= groupList[i].id %>" checked>
+                <% } else {%>
+                <input type="checkbox" id="groups" name="groups" value="<%= groupList[i].id %>">
+                <% } %>
+                <%= groupList[i].name + ' - ' + groupList[i].des %>
+              </label>
+              <% } %>
             </div>
           </div>
 

@@ -11,7 +11,9 @@ let AdSchema = new Schema({
   isA: {type: Boolean, default: true},    //是否自动点击
   isWX: {type: Boolean, default: false},  //是否支持微信打开
   weight: {type: Number, default: 1},
-  disable: {type: Boolean, default: false}
+  disable: {type: Boolean, default: false},
+  isAll: {type: Boolean, default: false},
+  groups: [{type: Schema.Types.ObjectId, ref: 'AdGroup'}]
 });
 
 AdSchema.plugin(timestamps);
