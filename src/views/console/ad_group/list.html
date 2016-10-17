@@ -45,7 +45,7 @@
             <% if(items[i].isA){ %> <td><span>T</span></td> <% } else { %> <td><span style="color:red;">F</span></td> <% } %>
             <% if(!items[i].isWX){ %> <td><span>F</span></td> <% } else { %> <td><span style="color:blue;">T</span></td> <% } %>
             <% if(!items[i].disable){ %> <td><span>F</span></td> <% } else { %> <td><span style="color:red;">T</span></td> <% } %>
-            <td><span><%= items[i].id %></span></td>
+            <td><span><%= items[i]._id %></span></td>
             <td>
               <a class="btn-link" href="/console/group/edit/<%= items[i]._id %>">编辑</a>
             </td>
