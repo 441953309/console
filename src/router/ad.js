@@ -11,7 +11,7 @@ export async function adList(ctx) {
   const startRow = (page - 1) * perPage;
 
   const count = await Ad.count();
-  const ads = await Ad.find({}).skip(startRow).limit(perPage).sort('-weight').populate('groups', 'name');
+  const ads = await Ad.find({}).skip(startRow).limit(perPage).sort('disable -weight').populate('groups', 'name');
 
   const items = [];
   for(let ad of ads){
@@ -116,7 +116,7 @@ export async function groupList(ctx) {
   const startRow = (page - 1) * perPage;
 
   const count = await AdGroup.count();
-  const groups = await AdGroup.find({}).populate('ads').skip(startRow).limit(perPage).sort('-weight');
+  const groups = await AdGroup.find({}).populate('ads').skip(startRow).limit(perPage).sort('disable -weight');
 
   return ctx.render('console/ad_group/list', {items: groups, page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/group'}});
 }
