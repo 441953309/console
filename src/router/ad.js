@@ -15,7 +15,29 @@ export async function adList(ctx) {
   const count = await Ad.count();
   const ads = await Ad.find({}).skip(startRow).limit(perPage).sort('disable -weight').populate('groups', 'name');
 
-  return ctx.render('console/ad/list', {items: ads, page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/ad'}});
+  const items = [];
+  for (let ad of ads) {
+    let item = ad.toObject();
+    const urls = await AdUrl.find({adId: ad._id}).sort('-weight disable');
+
+    let sum = 0;
+    for(let url of urls){
+      if(!url.disable) sum += url.weight;
+    }
+
+    item.urls = [];
+    for(let url of urls){
+      if(!url.disable){
+        item.urls.push(`${url.name}(${Math.round(url.weight * 100 / sum)}%)`);
+      }else{
+        item.urls.push(`${url.name}(0%)`);
+      }
+    }
+
+    items.push(item);
+  }
+
+  return ctx.render('console/ad/list', {items: items, page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/ad'}});
 }
 
 export async function showCreateAd(ctx) {
