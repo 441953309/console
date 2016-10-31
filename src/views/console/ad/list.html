@@ -29,7 +29,7 @@
             <th width="10">A</th>
             <th width="10">W</th>
             <th width="10">D</th>
-            <th width="280">url</th>
+            <!--<th width="280">url</th>-->
             <th width="180">urls</th>
             <th>opt</th>
           </tr>
@@ -53,7 +53,7 @@
             <% if(items[i].isA){ %> <td><span>T</span></td> <% } else { %> <td><span style="color:red;">F</span></td> <% } %>
             <% if(!items[i].isWX){ %> <td><span>F</span></td> <% } else { %> <td><span style="color:blue;">T</span></td> <% } %>
             <% if(!items[i].disable){ %> <td><span>F</span></td> <% } else { %> <td><span style="color:red;">T</span></td> <% } %>
-            <td><span><%= items[i].url %></span></td>
+            <!--<td><span><%= items[i].url %></span></td>-->
             <td><span><%= items[i].urls %></span></td>
             <td>
               <a class="btn-link" href="/console/ad/edit/<%= items[i]._id %>">编辑</a>
