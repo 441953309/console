@@ -68,6 +68,39 @@
             </div>
           </div>
 
+          <% if(typeof(urlList) !== 'undefined') { %>
+          <div class="control-group">
+            <label class="control-label" >urls</label>
+
+            <div class="controls">
+              <table class="table table-bordered">
+                <tr>
+                  <th width="70">name</th>
+                  <th width="70">des</th>
+                  <th width="45">weight</th>
+                  <th width="10">D</th>
+                  <th>url</th>
+                  <th width="100">
+                    <a class="btn-link" href="/console/url/create/<%= ad._id %>"><span>添加</span></a>
+                  </th>
+                </tr>
+                <% for(var i = 0; i < urlList.length; i++){ %>
+                <tr>
+                  <td><span><%= urlList[i].name %></span></td>
+                  <td><span><%= urlList[i].des %></span></td>
+                  <td><span><%= urlList[i].weight %></span></td>
+                  <% if(!urlList[i].disable){ %> <td><span>F</span></td> <% } else { %> <td><span style="color:red;">T</span></td> <% } %>
+                  <td><span><%= urlList[i].url %></span></td>
+                  <td>
+                    <a class="btn-link" href="/console/url/edit/<%= urlList[i]._id %>">编辑</a>
+                  </td>
+                </tr>
+                <% } %>
+              </table>
+            </div>
+          </div>
+          <% } %>
+
           <div class="control-group">
             <label class="control-label" for="isS">isShow</label>
             <div class="controls">

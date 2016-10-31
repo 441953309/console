@@ -126,23 +126,6 @@
             </div>
           </div>
 
-          <div class="control-group">
-            <label class="control-label" for="ads" >ads</label>
-
-            <div class="controls">
-              <% for(var i = 0; i < adList.length; i++) { %>
-              <label class="checkbox">
-                <% if(typeof(group) !== 'undefined' && group.ads.indexOf(adList[i].id) > -1) { %>
-                <input type="checkbox" id="ads" name="ads" value="<%= adList[i].id %>" checked>
-                <% } else {%>
-                <input type="checkbox" id="ads" name="ads" value="<%= adList[i].id %>">
-                <% } %>
-                <%= adList[i].name + ' - ' + adList[i].des %>
-              </label>
-              <% } %>
-            </div>
-          </div>
-
           <div class="form-actions">
             <input type="submit" class="btn btn-success" value="提交"/>
             <input type="reset" class="btn" value="重置"/>

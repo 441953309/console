@@ -19,6 +19,11 @@ router.post('/ad/create', ad.createAd);
 router.get('/ad/edit/:id', ad.showEditAd);
 router.post('/ad/edit/:id', ad.editAd);
 
+router.get('/url/create/:ad_id', ad.showCreateUrl);
+router.post('/url/create/:ad_id', ad.createUrl);
+router.get('/url/edit/:id', ad.showEditUrl);
+router.post('/url/edit/:id', ad.editUrl);
+
 router.get('/group', ad.groupList);
 router.get('/group/create', ad.showCreateGroup);
 router.post('/group/create', ad.createGroup);

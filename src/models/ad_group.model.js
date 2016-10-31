@@ -9,7 +9,6 @@ let AdGroupSchema = new Schema({
   isA: {type: Boolean, default: true},    //是否自动点击
   isWX: {type: Boolean, default: false},  //是否微信渠道
   canClose: {type: Boolean, default: true},//是否显示关闭按钮
-  ads: [{type: Schema.Types.ObjectId, ref: 'Ad'}],
   weight: {type: Number, default: 1},
   disable: {type: Boolean, default: false},
   cnzz_id: String

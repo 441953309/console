@@ -3,8 +3,10 @@ var path = require('path');
 var validator = require('validator');
 const mongoose = require('mongoose');
 const Ad = mongoose.model('Ad');
+const AdUrl = mongoose.model('AdUrl');
 const AdGroup = mongoose.model('AdGroup');
 
+//ad
 export async function adList(ctx) {
   const page = parseInt(ctx.query.page) > 0 ? parseInt(ctx.query.page) : 1;
   const perPage = parseInt(ctx.query.perPage) > 0 ? parseInt(ctx.query.perPage) : 50;
@@ -13,18 +15,7 @@ export async function adList(ctx) {
   const count = await Ad.count();
   const ads = await Ad.find({}).skip(startRow).limit(perPage).sort('disable -weight').populate('groups', 'name');
 
-  const items = [];
-  for (let ad of ads) {
-    let item = ad.toObject();
-    const groups = await AdGroup.find({ads: item._id}, 'name');
-    item.groups1 = [];
-    for (let group of groups) {
-      item.groups1.push(group.name);
-    }
-    items.push(item);
-  }
-
-  return ctx.render('console/ad/list', {items: items, page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/ad'}});
+  return ctx.render('console/ad/list', {items: ads, page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/ad'}});
 }
 
 export async function showCreateAd(ctx) {
@@ -68,11 +59,12 @@ export async function showEditAd(ctx) {
   var id = ctx.params.id;
   if (!mongoose.Types.ObjectId.isValid(id)) return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
-  const ad = await Ad.findById(id)
+  const ad = await Ad.findById(id);
   if (!ad)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
   const groups = await AdGroup.find({disable: false}).sort('-weight');
-  return ctx.render('console/ad/edit', {action: 'edit', ad, groupList: groups})
+  const urls = await AdUrl.find({adId: id}).sort('-weight disable');
+  return ctx.render('console/ad/edit', {action: 'edit', ad, groupList: groups, urlList: urls});
 }
 
 export async function editAd(ctx) {
@@ -110,21 +102,64 @@ export async function editAd(ctx) {
   return ctx.redirect('/console/ad');
 }
 
+//url
+export async function showCreateUrl(ctx) {
+  if (!mongoose.Types.ObjectId.isValid(ctx.params.ad_id)) ctx.throw(400);
+  return ctx.render('console/ad_url/edit', {adId: ctx.params.ad_id});
+}
+
+export async function createUrl(ctx) {
+  if (!mongoose.Types.ObjectId.isValid(ctx.params.ad_id)) ctx.throw(400);
+
+  const body = {};
+  body.adId = ctx.params.ad_id;
+  if (ctx.body.name)body.name = ctx.body.name;
+  if (ctx.body.des)body.des = ctx.body.des;
+  if (ctx.body.url)body.url = ctx.body.url;
+  if (ctx.body.weight)body.weight = ctx.body.weight;
+  body.disable = !!ctx.body.disable;
+
+  await AdUrl.create(body);
+  return ctx.redirect(`/console/ad/edit/${ctx.params.ad_id}`);
+}
+
+export async function showEditUrl(ctx) {
+  if (!mongoose.Types.ObjectId.isValid(ctx.params.id)) ctx.throw(400);
+  const url = await AdUrl.findById(ctx.params.id);
+  return ctx.render('console/ad_url/edit', {action: 'edit', adId: url.adId, url});
+}
+
+export async function editUrl(ctx) {
+  if (!mongoose.Types.ObjectId.isValid(ctx.params.id)) return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
+  const url = await AdUrl.findById(ctx.params.id)
+  if (!url)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
+
+  if (ctx.body.name)url.name = ctx.body.name;
+  if (ctx.body.des)url.des = ctx.body.des;
+  if (ctx.body.url) url.url = ctx.body.url;
+  if (ctx.body.weight)url.weight = ctx.body.weight;
+  url.disable = !!ctx.body.disable;
+
+  await url.save();
+  return ctx.redirect(`/console/ad/edit/${url.adId}`);
+}
+
+//group
 export async function groupList(ctx) {
   const page = parseInt(ctx.query.page) > 0 ? parseInt(ctx.query.page) : 1;
   const perPage = parseInt(ctx.query.perPage) > 0 ? parseInt(ctx.query.perPage) : 50;
   const startRow = (page - 1) * perPage;
 
   const count = await AdGroup.count();
-  const groups = await AdGroup.find({}).populate('ads').skip(startRow).limit(perPage).sort('disable -weight');
+  const groups = await AdGroup.find({}).skip(startRow).limit(perPage).sort('disable -weight');
 
   const items = [];
   for (let group of groups) {
     let item = group.toObject();
     const ads = await Ad.find({disable: false, $or: [{isAll: true}, {groups: item._id}]}, 'name');
-    item.ads1 = [];
+    item.ads = [];
     for (let ad of ads) {
-      item.ads1.push(ad.name);
+      item.ads.push(ad.name);
     }
     items.push(item);
   }
@@ -133,8 +168,7 @@ export async function groupList(ctx) {
 }
 
 export async function showCreateGroup(ctx) {
-  const ads = await Ad.find({disable: false}).sort('-weight');
-  return ctx.render('console/ad_group/edit', {adList: ads});
+  return ctx.render('console/ad_group/edit');
 }
 
 export async function createGroup(ctx) {
@@ -153,18 +187,7 @@ export async function createGroup(ctx) {
   var canClose = !!ctx.body.canClose;
   var disable = !!ctx.body.disable;
 
-  var ads = [];
-  if (ctx.body.ads) {
-    if (ctx.body.ads instanceof Array) {
-      for (let adId of ctx.body.ads) {
-        if (mongoose.Types.ObjectId.isValid(adId))ads.push(adId)
-      }
-    } else if (mongoose.Types.ObjectId.isValid(ctx.body.ads)) {//只选择一个的时候
-      ads.push(ctx.body.ads)
-    }
-  }
-
-  await AdGroup.create({name, des, cnzz_id, weight, disable, ads, isS, isA, isWX, canClose});
+  await AdGroup.create({name, des, cnzz_id, weight, disable, isS, isA, isWX, canClose});
   return ctx.redirect('/console/group');
 }
 
@@ -175,8 +198,7 @@ export async function showEditGroup(ctx) {
   const group = await AdGroup.findById(id)
   if (!group)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
-  const ads = await Ad.find({disable: false}).sort('-weight');
-  return ctx.render('console/ad_group/edit', {action: 'edit', group, adList: ads})
+  return ctx.render('console/ad_group/edit', {action: 'edit', group})
 }
 
 export async function editGroup(ctx) {
@@ -197,16 +219,6 @@ export async function editGroup(ctx) {
   var isWX = !!ctx.body.isWX;
   var canClose = !!ctx.body.canClose;
   var disable = !!ctx.body.disable;
-  var ads = [];
-  if (ctx.body.ads) {
-    if (ctx.body.ads instanceof Array) {
-      for (let adId of ctx.body.ads) {
-        if (mongoose.Types.ObjectId.isValid(adId))ads.push(adId)
-      }
-    } else if (mongoose.Types.ObjectId.isValid(ctx.body.ads)) {//只选择一个的时候
-      ads.push(ctx.body.ads)
-    }
-  }
 
   group.des = des;
   group.cnzz_id = cnzz_id;
@@ -216,7 +228,6 @@ export async function editGroup(ctx) {
   group.isWX = isWX;
   group.canClose = canClose;
   group.disable = disable;
-  group.ads = ads;
 
   await group.save();
   return ctx.redirect('/console/group');
