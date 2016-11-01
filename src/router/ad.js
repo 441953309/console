@@ -48,11 +48,9 @@ export async function showCreateAd(ctx) {
 export async function createAd(ctx) {
   const groups = await AdGroup.find({disable: false}).sort('-weight');
   if (!ctx.body.imgName) return ctx.render('console/ad/edit', {error: '请输入图片名称', groupList: groups});
-  if (!ctx.body.url) return ctx.render('console/ad/edit', {error: '请输入链接', groupList: groups});
 
   const body = {};
   body.imgName = ctx.body.imgName;
-  body.url = ctx.body.url;
   if (ctx.body.name)body.name = ctx.body.name;
   if (ctx.body.des)body.des = ctx.body.des;
   if (ctx.body.weight)body.weight = ctx.body.weight;
@@ -97,7 +95,6 @@ export async function editAd(ctx) {
   if (!ad)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
   if (ctx.body.imgName)ad.imgName = ctx.body.imgName;
-  if (ctx.body.url) ad.url = ctx.body.url;
   if (ctx.body.name)ad.name = ctx.body.name;
   if (ctx.body.des)ad.des = ctx.body.des;
   if (ctx.body.weight)ad.weight = ctx.body.weight;
