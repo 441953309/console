@@ -51,6 +51,7 @@ export async function createAd(ctx) {
 
   const body = {};
   body.imgName = ctx.body.imgName;
+  if (ctx.body.title)body.title = ctx.body.title;
   if (ctx.body.name)body.name = ctx.body.name;
   if (ctx.body.des)body.des = ctx.body.des;
   if (ctx.body.weight)body.weight = ctx.body.weight;
@@ -95,6 +96,7 @@ export async function editAd(ctx) {
   if (!ad)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
   if (ctx.body.imgName)ad.imgName = ctx.body.imgName;
+  if (ctx.body.title)ad.title = ctx.body.title;
   if (ctx.body.name)ad.name = ctx.body.name;
   if (ctx.body.des)ad.des = ctx.body.des;
   if (ctx.body.weight)ad.weight = ctx.body.weight;

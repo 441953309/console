@@ -53,6 +53,15 @@
           </div>
 
           <div class="control-group">
+            <label class="control-label" for="title">title</label>
+
+            <div class="controls">
+              <input class="input-xlarge" id="title" name="title" size="30" type="text"
+                     value="<%= typeof(ad) !== 'undefined' && ad.title || '' %>"/>
+            </div>
+          </div>
+
+          <div class="control-group">
             <label class="control-label" for="weight">weight</label>
             <div class="controls">
               <input class="input-xlarge" id="weight" name="weight" size="30" type="number"
