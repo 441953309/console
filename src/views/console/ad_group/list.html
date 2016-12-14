@@ -25,6 +25,7 @@
             <th width="80">cnzzId</th>
             <th width="40">ads</th>
             <th width="45">weight</th>
+            <th width="45">pvRatio</th>
             <th width="10">S</th>
             <th width="10">A</th>
             <th width="10">W</th>
@@ -39,6 +40,7 @@
             <td><span><%= items[i].cnzz_id %></span></td>
             <td><span><%= items[i].ads.length %></span></td>
             <td><span><%= items[i].weight %></span></td>
+            <td><span><%= items[i].pvRatioLimit %></span></td>
             <% if(items[i].isS){ %> <td><span>T</span></td> <% } else { %> <td><span style="color:red;">F</span></td> <% } %>
             <% if(items[i].isA){ %> <td><span>T</span></td> <% } else { %> <td><span style="color:red;">F</span></td> <% } %>
             <% if(!items[i].isWX){ %> <td><span>F</span></td> <% } else { %> <td><span style="color:blue;">T</span></td> <% } %>

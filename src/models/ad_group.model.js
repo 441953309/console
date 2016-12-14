@@ -11,6 +11,7 @@ let AdGroupSchema = new Schema({
   canClose: {type: Boolean, default: true},//是否显示关闭按钮
   weight: {type: Number, default: 1},
   disable: {type: Boolean, default: false},
+  pvRatioLimit: {type: Number, default: 0}, //pv比例限制
   cnzz_id: String
 });
 
