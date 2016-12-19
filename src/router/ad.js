@@ -21,15 +21,15 @@ export async function adList(ctx) {
     const urls = await AdUrl.find({adId: ad._id}).sort('-weight disable');
 
     let sum = 0;
-    for(let url of urls){
-      if(!url.disable) sum += url.weight;
+    for (let url of urls) {
+      if (!url.disable) sum += url.weight;
     }
 
     item.urls = [];
-    for(let url of urls){
-      if(!url.disable){
+    for (let url of urls) {
+      if (!url.disable) {
         item.urls.push(`${url.name}(${Math.round(url.weight * 100 / sum)}%)`);
-      }else{
+      } else {
         item.urls.push(`${url.name}(0%)`);
       }
     }
@@ -37,7 +37,10 @@ export async function adList(ctx) {
     items.push(item);
   }
 
-  return ctx.render('console/ad/list', {items: items, page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/ad'}});
+  return ctx.render('console/ad/list', {
+    items: items,
+    page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/ad'}
+  });
 }
 
 export async function showCreateAd(ctx) {
@@ -51,10 +54,10 @@ export async function createAd(ctx) {
 
   const body = {};
   body.imgName = ctx.body.imgName;
-  if (ctx.body.title)body.title = ctx.body.title;
-  if (ctx.body.name)body.name = ctx.body.name;
-  if (ctx.body.des)body.des = ctx.body.des;
-  if (ctx.body.weight)body.weight = ctx.body.weight;
+  if (ctx.body.title) body.title = ctx.body.title;
+  if (ctx.body.name) body.name = ctx.body.name;
+  if (ctx.body.des) body.des = ctx.body.des;
+  if (ctx.body.weight) body.weight = ctx.body.weight;
   body.isS = !!ctx.body.isS;
   body.isA = !!ctx.body.isA;
   body.isWX = !!ctx.body.isWX;
@@ -65,7 +68,7 @@ export async function createAd(ctx) {
   if (!body.isAll && ctx.body.groups) {
     if (ctx.body.groups instanceof Array) {
       for (let groupId of ctx.body.groups) {
-        if (mongoose.Types.ObjectId.isValid(groupId))body.groups.push(groupId)
+        if (mongoose.Types.ObjectId.isValid(groupId)) body.groups.push(groupId)
       }
     } else if (mongoose.Types.ObjectId.isValid(ctx.body.groups)) {//只选择一个的时候
       body.groups.push(ctx.body.groups)
@@ -95,11 +98,11 @@ export async function editAd(ctx) {
   const ad = await Ad.findById(id)
   if (!ad)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
-  if (ctx.body.imgName)ad.imgName = ctx.body.imgName;
-  if (ctx.body.title)ad.title = ctx.body.title;
-  if (ctx.body.name)ad.name = ctx.body.name;
-  if (ctx.body.des)ad.des = ctx.body.des;
-  if (ctx.body.weight)ad.weight = ctx.body.weight;
+  if (ctx.body.imgName) ad.imgName = ctx.body.imgName;
+  if (ctx.body.title) ad.title = ctx.body.title;
+  if (ctx.body.name) ad.name = ctx.body.name;
+  if (ctx.body.des) ad.des = ctx.body.des;
+  if (ctx.body.weight) ad.weight = ctx.body.weight;
   ad.isS = !!ctx.body.isS;
   ad.isA = !!ctx.body.isA;
   ad.isWX = !!ctx.body.isWX;
@@ -110,7 +113,7 @@ export async function editAd(ctx) {
   if (!ad.isAll && ctx.body.groups) {
     if (ctx.body.groups instanceof Array) {
       for (let groupId of ctx.body.groups) {
-        if (mongoose.Types.ObjectId.isValid(groupId))groups.push(groupId)
+        if (mongoose.Types.ObjectId.isValid(groupId)) groups.push(groupId)
       }
     } else if (mongoose.Types.ObjectId.isValid(ctx.body.groups)) {//只选择一个的时候
       groups.push(ctx.body.groups)
@@ -134,10 +137,10 @@ export async function createUrl(ctx) {
 
   const body = {};
   body.adId = ctx.params.ad_id;
-  if (ctx.body.name)body.name = ctx.body.name;
-  if (ctx.body.des)body.des = ctx.body.des;
-  if (ctx.body.url)body.url = ctx.body.url;
-  if (ctx.body.weight)body.weight = ctx.body.weight;
+  if (ctx.body.name) body.name = ctx.body.name;
+  if (ctx.body.des) body.des = ctx.body.des;
+  if (ctx.body.url) body.url = ctx.body.url;
+  if (ctx.body.weight) body.weight = ctx.body.weight;
   body.disable = !!ctx.body.disable;
 
   await AdUrl.create(body);
@@ -155,10 +158,10 @@ export async function editUrl(ctx) {
   const url = await AdUrl.findById(ctx.params.id)
   if (!url)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
-  if (ctx.body.name)url.name = ctx.body.name;
-  if (ctx.body.des)url.des = ctx.body.des;
+  if (ctx.body.name) url.name = ctx.body.name;
+  if (ctx.body.des) url.des = ctx.body.des;
   if (ctx.body.url) url.url = ctx.body.url;
-  if (ctx.body.weight)url.weight = ctx.body.weight;
+  if (ctx.body.weight) url.weight = ctx.body.weight;
   url.disable = !!ctx.body.disable;
 
   await url.save();
@@ -185,7 +188,10 @@ export async function groupList(ctx) {
     items.push(item);
   }
 
-  return ctx.render('console/ad_group/list', {items: items, page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/group'}});
+  return ctx.render('console/ad_group/list', {
+    items: items,
+    page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/group'}
+  });
 }
 
 export async function showCreateGroup(ctx) {
@@ -193,6 +199,9 @@ export async function showCreateGroup(ctx) {
 }
 
 export async function createGroup(ctx) {
+  let _id;
+  if (mongoose.Types.ObjectId.isValid(ctx.body._id)) _id = ctx.body._id;
+
   var name = validator.trim(ctx.body.name);
   if (!name) {
     const ads = await Ad.find({disable: false});
@@ -209,7 +218,7 @@ export async function createGroup(ctx) {
   var canClose = !!ctx.body.canClose;
   var disable = !!ctx.body.disable;
 
-  await AdGroup.create({name, des, cnzz_id, weight, pvRatioLimit, disable, isS, isA, isWX, canClose});
+  await AdGroup.create({_id, name, des, cnzz_id, weight, pvRatioLimit, disable, isS, isA, isWX, canClose});
   return ctx.redirect('/console/group');
 }
 

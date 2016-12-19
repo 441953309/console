@@ -28,6 +28,15 @@
         <% } else {%>
         <form class="form-horizontal" action="/console/group/create" method="post">
         <% } %>
+
+          <div class="control-group">
+            <label class="control-label" for="_id">_id</label>
+            <div class="controls">
+              <input class="input-xlarge" id="_id" name="_id" size="30" type="text"
+                     value="<%= typeof(group) !== 'undefined' && group._id || '' %>"/>
+            </div>
+          </div>
+
           <div class="control-group">
             <label class="control-label" for="name">name</label>
             <div class="controls">
