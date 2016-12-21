@@ -199,9 +199,6 @@ export async function showCreateGroup(ctx) {
 }
 
 export async function createGroup(ctx) {
-  let _id;
-  if (mongoose.Types.ObjectId.isValid(ctx.body._id)) _id = ctx.body._id;
-
   var name = validator.trim(ctx.body.name);
   if (!name) {
     const ads = await Ad.find({disable: false});
@@ -218,7 +215,7 @@ export async function createGroup(ctx) {
   var canClose = !!ctx.body.canClose;
   var disable = !!ctx.body.disable;
 
-  await AdGroup.create({_id, name, des, cnzz_id, weight, pvRatioLimit, disable, isS, isA, isWX, canClose});
+  await AdGroup.create({name, des, cnzz_id, weight, pvRatioLimit, disable, isS, isA, isWX, canClose});
   return ctx.redirect('/console/group');
 }
 
