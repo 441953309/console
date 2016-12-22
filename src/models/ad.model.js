@@ -7,6 +7,7 @@ let AdSchema = new Schema({
   des: String,
   imgName: String,
   title: String,
+  title2: String,
   url: String,
   isS: {type: Boolean, default: true},    //是否展示
   isA: {type: Boolean, default: true},    //是否自动点击
