@@ -46,7 +46,6 @@
           </div>
           <div class="control-group">
             <label class="control-label" for="cnzz_id">cnzz_id</label>
-
             <div class="controls">
               <input class="input-xlarge" id="cnzz_id" name="cnzz_id" size="30" type="text"
                      value="<%= typeof(group) !== 'undefined' && group.cnzz_id || '' %>"/>
@@ -64,6 +63,13 @@
             <div class="controls">
               <input class="input-xlarge" id="pvRatioLimit" name="pvRatioLimit" size="30" type="number"
                      value="<%= typeof(group) !== 'undefined' && group.pvRatioLimit || '0' %>"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="cityLimit">cityLimit</label>
+            <div class="controls">
+              <input class="input-xlarge" id="cityLimit" name="cityLimit" size="30" type="text"
+                     value="<%= typeof(group) !== 'undefined' && group.cityLimit || '' %>"/>
             </div>
           </div>
 

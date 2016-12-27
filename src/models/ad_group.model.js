@@ -12,6 +12,7 @@ let AdGroupSchema = new Schema({
   weight: {type: Number, default: 1},
   disable: {type: Boolean, default: false},
   pvRatioLimit: {type: Number, default: 0}, //pv比例限制
+  cityLimit: String,
   cnzz_id: String
 });
 

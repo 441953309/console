@@ -211,13 +211,14 @@ export async function createGroup(ctx) {
   var cnzz_id = validator.trim(ctx.body.cnzz_id);
   var weight = validator.trim(ctx.body.weight);
   var pvRatioLimit = validator.trim(ctx.body.pvRatioLimit);
+  var cityLimit = validator.trim(ctx.body.cityLimit);
   var isS = !!ctx.body.isS;
   var isA = !!ctx.body.isA;
   var isWX = !!ctx.body.isWX;
   var canClose = !!ctx.body.canClose;
   var disable = !!ctx.body.disable;
 
-  await AdGroup.create({name, des, cnzz_id, weight, pvRatioLimit, disable, isS, isA, isWX, canClose});
+  await AdGroup.create({name, des, cnzz_id, weight, pvRatioLimit, cityLimit, disable, isS, isA, isWX, canClose});
   return ctx.redirect('/console/group');
 }
 
@@ -245,6 +246,7 @@ export async function editGroup(ctx) {
   var cnzz_id = validator.trim(ctx.body.cnzz_id);
   var weight = validator.trim(ctx.body.weight);
   var pvRatioLimit = validator.trim(ctx.body.pvRatioLimit);
+  var cityLimit = validator.trim(ctx.body.cityLimit);
   var isS = !!ctx.body.isS;
   var isA = !!ctx.body.isA;
   var isWX = !!ctx.body.isWX;
@@ -255,6 +257,7 @@ export async function editGroup(ctx) {
   group.cnzz_id = cnzz_id;
   group.weight = weight;
   group.pvRatioLimit = pvRatioLimit;
+  group.cityLimit = cityLimit;
   group.isS = isS;
   group.isA = isA;
   group.isWX = isWX;
