@@ -53,6 +53,15 @@
           </div>
 
           <div class="control-group">
+            <label class="control-label" for="param1">param1</label>
+
+            <div class="controls">
+              <input class="input-xlarge" id="param1" name="param1" size="30" type="text"
+                     value="<%= typeof(url) !== 'undefined' && url.param1 || '' %>"/>
+            </div>
+          </div>
+
+          <div class="control-group">
             <label class="control-label" for="weight">weight</label>
             <div class="controls">
               <input class="input-xlarge" id="weight" name="weight" size="30" type="number"

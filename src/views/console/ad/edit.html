@@ -90,6 +90,7 @@
                   <th width="45">weight</th>
                   <th width="10">D</th>
                   <th>url</th>
+                  <th width="70">param1</th>
                   <th width="100">
                     <a class="btn-link" href="/console/url/create/<%= ad._id %>"><span>添加</span></a>
                   </th>
@@ -101,6 +102,7 @@
                   <td><span><%= urlList[i].weight %></span></td>
                   <% if(!urlList[i].disable){ %> <td><span>F</span></td> <% } else { %> <td><span style="color:red;">T</span></td> <% } %>
                   <td><span><%= urlList[i].url %></span></td>
+                  <td><span><%= urlList[i].param1 %></span></td>
                   <td>
                     <a class="btn-link" href="/console/url/edit/<%= urlList[i]._id %>">编辑</a>
                   </td>

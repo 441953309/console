@@ -142,6 +142,7 @@ export async function createUrl(ctx) {
   if (ctx.body.name) body.name = ctx.body.name;
   if (ctx.body.des) body.des = ctx.body.des;
   if (ctx.body.url) body.url = ctx.body.url;
+  if (ctx.body.param1) body.param1 = ctx.body.param1;
   if (ctx.body.weight) body.weight = ctx.body.weight;
   body.disable = !!ctx.body.disable;
 
@@ -161,8 +162,9 @@ export async function editUrl(ctx) {
   if (!url)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
   if (ctx.body.name) url.name = ctx.body.name;
-  if (ctx.body.des) url.des = ctx.body.des;
-  if (ctx.body.url) url.url = ctx.body.url;
+  url.des = ctx.body.des;
+  url.url = ctx.body.url;
+  url.param1 = ctx.body.param1;
   if (ctx.body.weight) url.weight = ctx.body.weight;
   url.disable = !!ctx.body.disable;
 

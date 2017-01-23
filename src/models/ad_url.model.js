@@ -7,6 +7,7 @@ let AdUrlSchema = new Schema({
   name: String,
   des: String,
   url: String,
+  param1: String,
   weight: {type: Number, default: 1},
   disable: {type: Boolean, default: false}
 });
