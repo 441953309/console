@@ -128,6 +128,21 @@ export async function editAd(ctx) {
   return ctx.redirect('/console/ad');
 }
 
+export async function delAd(ctx) {
+  // return ctx.render('console/notify/notify', {error: '删除功能已停用。'});
+
+  var id = ctx.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
+
+  const ad = await Ad.findById(id)
+  if (!ad)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
+
+  if (!ad.disable) return ctx.render('console/notify/notify', {error: '此列表项不可删除。'});
+
+  await ad.remove();
+  return ctx.redirect('/console/ad');
+}
+
 //url
 export async function showCreateUrl(ctx) {
   if (!mongoose.Types.ObjectId.isValid(ctx.params.ad_id)) ctx.throw(400);
