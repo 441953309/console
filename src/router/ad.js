@@ -129,7 +129,7 @@ export async function editAd(ctx) {
 }
 
 export async function delAd(ctx) {
-  // return ctx.render('console/notify/notify', {error: '删除功能已停用。'});
+  return ctx.render('console/notify/notify', {error: '删除功能已停用。'});
 
   var id = ctx.params.id;
   if (!mongoose.Types.ObjectId.isValid(id)) return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
@@ -188,7 +188,7 @@ export async function editUrl(ctx) {
 }
 
 export async function delUrl(ctx) {
-  // return ctx.render('console/notify/notify', {error: '删除功能已停用。'});
+  return ctx.render('console/notify/notify', {error: '删除功能已停用。'});
 
   var id = ctx.params.id;
   if (!mongoose.Types.ObjectId.isValid(id)) return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
