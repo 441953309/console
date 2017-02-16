@@ -134,7 +134,7 @@ export async function delAd(ctx) {
   var id = ctx.params.id;
   if (!mongoose.Types.ObjectId.isValid(id)) return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
-  const ad = await Ad.findById(id)
+  const ad = await Ad.findById(id);
   if (!ad)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
   if (!ad.disable) return ctx.render('console/notify/notify', {error: '此列表项不可删除。'});
@@ -184,6 +184,21 @@ export async function editUrl(ctx) {
   url.disable = !!ctx.body.disable;
 
   await url.save();
+  return ctx.redirect(`/console/ad/edit/${url.adId}`);
+}
+
+export async function delUrl(ctx) {
+  // return ctx.render('console/notify/notify', {error: '删除功能已停用。'});
+
+  var id = ctx.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
+
+  const url = await AdUrl.findById(id);
+  if (!url)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
+
+  if (!url.disable) return ctx.render('console/notify/notify', {error: '此列表项不可删除。'});
+
+  await url.remove();
   return ctx.redirect(`/console/ad/edit/${url.adId}`);
 }
 
