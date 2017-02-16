@@ -239,6 +239,9 @@ export async function createGroup(ctx) {
     return ctx.render('console/ad_group/edit', {error: '请输入渠道名称', adList: ads});
   }
 
+  let id;
+  if(mongoose.Types.ObjectId.isValid(ctx.body.id)) id = ctx.body.id;
+
   var des = validator.trim(ctx.body.des);
   var cnzz_id = validator.trim(ctx.body.cnzz_id);
   var weight = validator.trim(ctx.body.weight);
@@ -250,7 +253,7 @@ export async function createGroup(ctx) {
   var canClose = !!ctx.body.canClose;
   var disable = !!ctx.body.disable;
 
-  await AdGroup.create({name, des, cnzz_id, weight, pvRatioLimit, cityLimit, disable, isS, isA, isWX, canClose});
+  await AdGroup.create({_id: id, name, des, cnzz_id, weight, pvRatioLimit, cityLimit, disable, isS, isA, isWX, canClose});
   return ctx.redirect('/console/group');
 }
 
