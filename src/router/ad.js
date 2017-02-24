@@ -88,7 +88,7 @@ export async function showEditAd(ctx) {
   if (!ad)return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});
 
   const groups = await AdGroup.find({disable: false}).sort('-weight');
-  const urls = await AdUrl.find({adId: id}).sort('-weight disable');
+  const urls = await AdUrl.find({adId: id}).sort('disable -weight');
   return ctx.render('console/ad/edit', {action: 'edit', ad, groupList: groups, urlList: urls});
 }
 
@@ -144,6 +144,20 @@ export async function delAd(ctx) {
 }
 
 //url
+export async function urlList(ctx) {
+  const page = parseInt(ctx.query.page) > 0 ? parseInt(ctx.query.page) : 1;
+  const perPage = parseInt(ctx.query.perPage) > 0 ? parseInt(ctx.query.perPage) : 500;
+  const startRow = (page - 1) * perPage;
+
+  const count = await AdUrl.count();
+  const urls = await AdUrl.find({}).skip(startRow).limit(perPage).sort('disable -adId -weight').populate('adId', 'name disable');
+
+  return ctx.render('console/ad_url/list', {
+    items: urls,
+    page: {currentPage: page, total: Math.ceil(count / perPage), base: '/console/url'}
+  });
+}
+
 export async function showCreateUrl(ctx) {
   if (!mongoose.Types.ObjectId.isValid(ctx.params.ad_id)) ctx.throw(400);
   return ctx.render('console/ad_url/edit', {adId: ctx.params.ad_id});
@@ -188,7 +202,7 @@ export async function editUrl(ctx) {
 }
 
 export async function delUrl(ctx) {
-  return ctx.render('console/notify/notify', {error: '删除功能已停用。'});
+  // return ctx.render('console/notify/notify', {error: '删除功能已停用。'});
 
   var id = ctx.params.id;
   if (!mongoose.Types.ObjectId.isValid(id)) return ctx.render('console/notify/notify', {error: '此列表项不存在或已被删除。'});

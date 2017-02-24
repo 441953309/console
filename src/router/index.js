@@ -20,6 +20,7 @@ router.get('/ad/edit/:id', ad.showEditAd);
 router.post('/ad/edit/:id', ad.editAd);
 router.get('/ad/del/:id', ad.delAd);
 
+router.get('/url', ad.urlList);
 router.get('/url/create/:ad_id', ad.showCreateUrl);
 router.post('/url/create/:ad_id', ad.createUrl);
 router.get('/url/edit/:id', ad.showEditUrl);
